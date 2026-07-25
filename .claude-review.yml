@@ -1,0 +1,14 @@
+# Sandbox config for exercising claude-review-action milestone 2.
+#
+# token_budget is set absurdly low on purpose: it forces the budget walk to drop
+# a file mid-list so the skip reasons appear in the run log, and so a smaller
+# file *after* the dropped one can be seen still getting reviewed. A real repo
+# would leave the 150000 default.
+#
+# `rules` is deliberately omitted so the built-in defaults apply — the rules text
+# is part of the base token estimate, and pinning it keeps this budget stable.
+token_budget: 2600
+
+# Proves the action reads the repository's own patterns, not just its built-ins.
+ignore_paths:
+  - "docs/**"
