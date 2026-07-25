@@ -5,4 +5,3 @@
 # log stays readable.
 provider: fixture
 fixture_path: findings.json
-model: some-gateway/llm-v3
