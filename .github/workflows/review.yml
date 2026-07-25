@@ -14,16 +14,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # No anthropic_api_key is passed anywhere in this workflow, on purpose.
+      # The review config selects a provider that never calls the API, and the
+      # action must therefore not demand a key it will not use.
       - uses: hebihime/claude-review-action@v1
         id: review
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
       - name: Show outputs
         run: |
           echo "skipped=${{ steps.review.outputs.skipped }}"
           echo "verdict=${{ steps.review.outputs.verdict }}"
           echo "findings_count=${{ steps.review.outputs.findings_count }}"
           echo "cost_usd=${{ steps.review.outputs.cost_usd }}"
+      # The assembled prompt is the whole point of provider: dry-run — it is the
+      # exact text a paid run would have sent, downloadable and reviewable.
+      - name: Upload the assembled prompt
+        if: hashFiles('claude-review-prompt.txt') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: assembled-prompt
+          path: claude-review-prompt.txt
 
   bad-token:
     name: review (bad token, expected to fail cleanly)
@@ -37,7 +46,6 @@ jobs:
         id: review
         continue-on-error: true
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           github_token: this-token-is-intentionally-invalid
       - name: Assert the step failed with a readable error
         run: |

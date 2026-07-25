@@ -1,0 +1,26 @@
+# Sandbox config for exercising claude-review-action.
+#
+# token_budget is set absurdly low on purpose: it forces the budget walk to drop
+# a file mid-list so the skip reasons appear in the run log, and so a smaller
+# file *after* the dropped one can be seen still getting reviewed. A real repo
+# would leave the 150000 default.
+#
+# `rules` is deliberately omitted so the built-in defaults apply — the rules text
+# is part of the base token estimate, and pinning it keeps this budget stable.
+#
+# 2800 is tuned to a base of ~1394 tokens (1150 of prompt and tool schema, plus
+# ~244 of default rules). It was 2600 when the base was 1144; the base moved when
+# the real prompt landed in milestone 3. Editing the rules or the prompt moves it
+# again and breaks the demonstration.
+token_budget: 2800
+
+# Proves the action reads the repository's own patterns, not just its built-ins.
+ignore_paths:
+  - "docs/**"
+
+# Replay a findings JSON as though the model had returned it. findings.json was
+# produced by feeding the dry-run prompt from the previous run to Claude Code —
+# real review output, replayed through the real pipeline, at zero API cost.
+# No API key is needed for this, and the workflow deliberately passes none.
+provider: fixture
+fixture_path: findings.json
