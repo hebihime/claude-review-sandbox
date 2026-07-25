@@ -22,5 +22,9 @@
       "rule_id": "clarity",
       "message": "inner and outer read as interchangeable at the call site. containee/container, or a doc comment naming which argument is the bounding box, would stop the arguments being swapped."
     }
-  ]
+  ],
+  "usage": {
+    "input_tokens": 2418,
+    "output_tokens": 511
+  }
 }
