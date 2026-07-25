@@ -1,0 +1,7 @@
+# Milestone 4 sandbox: inline comments and idempotent updates.
+#
+# No token_budget override here on purpose. PR #1 is the budget/skip-reason
+# demonstration; this PR is about comments, so every file is reviewed and the
+# log stays readable.
+provider: fixture
+fixture_path: findings.json

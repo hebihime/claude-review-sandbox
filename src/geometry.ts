@@ -4,7 +4,7 @@ export interface Rect {
 }
 
 export function area(rect: Rect): number {
-  return rect.width * rect.height
+  return Math.round(rect.width * rect.height)
 }
 
 export function perimeter(rect: Rect): number {
