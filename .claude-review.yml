@@ -1,4 +1,4 @@
-# Sandbox config for exercising claude-review-action milestone 2.
+# Sandbox config for exercising claude-review-action.
 #
 # token_budget is set absurdly low on purpose: it forces the budget walk to drop
 # a file mid-list so the skip reasons appear in the run log, and so a smaller
@@ -7,8 +7,18 @@
 #
 # `rules` is deliberately omitted so the built-in defaults apply — the rules text
 # is part of the base token estimate, and pinning it keeps this budget stable.
-token_budget: 2600
+#
+# 2800 is tuned to a base of ~1394 tokens (1150 of prompt and tool schema, plus
+# ~244 of default rules). It was 2600 when the base was 1144; the base moved when
+# the real prompt landed in milestone 3. Editing the rules or the prompt moves it
+# again and breaks the demonstration.
+token_budget: 2800
 
 # Proves the action reads the repository's own patterns, not just its built-ins.
 ignore_paths:
   - "docs/**"
+
+# Write the assembled prompt to a file and stop before calling the model. No API
+# key is needed for this, and the workflow deliberately passes none.
+provider: dry-run
+dry_run_path: claude-review-prompt.txt
