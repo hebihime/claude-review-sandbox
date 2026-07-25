@@ -18,7 +18,9 @@ token_budget: 2800
 ignore_paths:
   - "docs/**"
 
-# Write the assembled prompt to a file and stop before calling the model. No API
-# key is needed for this, and the workflow deliberately passes none.
-provider: dry-run
-dry_run_path: claude-review-prompt.txt
+# Replay a findings JSON as though the model had returned it. findings.json was
+# produced by feeding the dry-run prompt from the previous run to Claude Code —
+# real review output, replayed through the real pipeline, at zero API cost.
+# No API key is needed for this, and the workflow deliberately passes none.
+provider: fixture
+fixture_path: findings.json
