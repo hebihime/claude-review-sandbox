@@ -16,5 +16,5 @@ export function scaleRect(rect: Rect, factor: number): Rect {
 }
 
 export function fits(inner: Rect, outer: Rect): boolean {
-  return inner.width < outer.width && inner.height < outer.height
+  return inner.width <= outer.width && inner.height <= outer.height
 }
