@@ -7,7 +7,7 @@
 #
 # `rules` is deliberately omitted so the built-in defaults apply — the rules text
 # is part of the base token estimate, and pinning it keeps this budget stable.
-token_budgets: 2600
+token_budget: 2600
 
 # Proves the action reads the repository's own patterns, not just its built-ins.
 ignore_paths:
