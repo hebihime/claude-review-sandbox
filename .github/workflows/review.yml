@@ -27,6 +27,9 @@ jobs:
 
   bad-token:
     name: review (bad token, expected to fail cleanly)
+    # The skip-review label short-circuits before any API call, so this job
+    # has nothing to assert when the label is present.
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-review') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
