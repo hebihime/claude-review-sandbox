@@ -1,0 +1,44 @@
+name: Claude Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    name: review (happy path)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hebihime/claude-review-action@v1
+        id: review
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Show outputs
+        run: |
+          echo "skipped=${{ steps.review.outputs.skipped }}"
+          echo "verdict=${{ steps.review.outputs.verdict }}"
+          echo "findings_count=${{ steps.review.outputs.findings_count }}"
+          echo "cost_usd=${{ steps.review.outputs.cost_usd }}"
+
+  bad-token:
+    name: review (bad token, expected to fail cleanly)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hebihime/claude-review-action@v1
+        id: review
+        continue-on-error: true
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: this-token-is-intentionally-invalid
+      - name: Assert the step failed with a readable error
+        run: |
+          if [ "${{ steps.review.outcome }}" != "failure" ]; then
+            echo "::error::expected the bad-token step to fail"; exit 1
+          fi
+          echo "bad token failed as expected (outcome=${{ steps.review.outcome }})"
