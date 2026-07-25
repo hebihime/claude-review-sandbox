@@ -4,7 +4,7 @@ export interface Rect {
 }
 
 export function area(rect: Rect): number {
-  return rect.width * rect.height
+  return Math.round(rect.width * rect.height)
 }
 
 export function perimeter(rect: Rect): number {
@@ -16,5 +16,5 @@ export function scaleRect(rect: Rect, factor: number): Rect {
 }
 
 export function fits(inner: Rect, outer: Rect): boolean {
-  return inner.width <= outer.width && inner.height <= outer.height
+  return inner.width < outer.width && inner.height < outer.height
 }
